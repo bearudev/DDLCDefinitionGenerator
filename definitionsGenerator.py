@@ -1,9 +1,11 @@
 #Script made by ComboDev UwU
 
 #TODO-> Generate L/R poses with expressions. Expression generation already has been made, so you really just have to make the L/R thingy x3.
+#TODO-> Add an UI to it so it looks better.
 
 import sys
 import itertools
+import easygui
 
 class Program():
     name = ""
@@ -50,7 +52,30 @@ class Program():
                 print("Definitions.rpy cannot be read... Is it opened or being used somewhere else?")
         except:
             print("ERROR: definitions.rpy not found. Make sure it is located in the same folder as this script.")
+
+
     def startSetup(self):
+        msg = "Please fill the following and click Generate!"
+        title = "Doki Doki Definition Generator"
+        fieldNames = ["Character name","Pose sprite location (/game relative)\nEx: sayori or mod_assets/sayori","File extension (.png)","Full sprites? (Y/N)"]
+        fieldValues = []  # we start with blanks for the values
+        fieldValues = easygui.multenterbox(msg,title, fieldNames)
+        while 1: #UI :3!
+            if fieldValues == None: 
+                break
+            errmsg = ""
+            for i in range(len(fieldNames)):
+                if fieldValues[i].strip() == "":
+                    errmsg = errmsg + ('"%s" is a required field... >_<\n\n' % fieldNames[i])
+            if errmsg == "": 
+                break # no problems found
+            fieldValues = easygui.multenterbox(errmsg, title, fieldNames, fieldValues)
+            print("Reply was:", fieldValues)
+            self.name = fieldValues[0]
+            self.path = fieldValues[1]
+            self.file_extension = fieldValues[2]
+
+
         print('''------------------------------
 DDLC Character Image Defintion Generator
 Copyright ComboDev 2020
